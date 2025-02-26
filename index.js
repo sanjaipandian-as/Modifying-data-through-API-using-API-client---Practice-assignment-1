@@ -48,6 +48,33 @@ app.get('/',async(req,res)=>{
 //   res.sendFile(resolve(__dirname, 'pages/index.html'));
 // });
 
+app.put('/:id',async(req,res)=>{
+  try{
+    const id=req.params.id
+   
+    const updatedMenuItem=await MenuItem.findByIdAndUpdate(id,req.body,{new:true})
+    res.status(200).json({message: updatedMenuItem})
+  }
+  catch(err){
+    res.status(400).json({message:"error updating item"})
+  }
+})
+
+
+app.delete('/:id', async (req, res) => {
+  try {
+    const {id}=req.params
+    const deleteItem=await MenuItem.findByIdAndDelete(id);
+    if(!deleteItem){
+      res.status(404).json({message:"item not found"})
+    }
+    else{
+      res.status(200).json({message:"item deleted successfully"})
+    } 
+  } catch (error) {
+    res.status(500).json({Message:"Error in deleting Items"})
+  }
+})
 
 
 app.listen(port, () => {
